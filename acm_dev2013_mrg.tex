@@ -28,6 +28,8 @@
 
 \documentclass{acm_proc_article-sp}
 
+\usepackage{url}
+
 \begin{document}
 
 \title{Improving Data Collection and Monitoring through Dynamic Data Analysis}
@@ -76,8 +78,7 @@
 P. Lubell-Doughtie, P. Pokharel, M. Johnston, V. Modi\\
        \affaddr{Columbia University}\\
        \affaddr{New York, New York}\\
-       \email{pl2472@columbia.edu, prabhas.pokharel@gmail.com,
-           mejymejy@gmail.com, modi@columbia.edu}
+       \email{\{pl2472, pp2427, mj2537, modi\}@columbia.edu}
 }
 % Just remember to make sure that the TOTAL number of authors
 % is the number that will appear on the first page PLUS the
@@ -127,6 +128,8 @@ To serve as a dynamic data analysis service, updates are propagated through the 
 \caption{An update propagates from the dataset to all downstream merged datasets and aggregations.  The black arrows show structural dependencies created by the client.  The red arrow shows an update propagating through the system.}
 \label{fig:updates}
 \end{figure}
+
+Bamboo is free and open-source software\footnote{\url{http://bamboo.io}} (BSD License) written in Python and built upon many other open-source projects including CherryPy, MongoDB, and Celery.  For the numerical computations, we use the high-performance statistical package, pandas \cite{mckinney}.
 
 \subsection{Case Study 1: Survey Monitoring}
 
