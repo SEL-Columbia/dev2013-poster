@@ -98,96 +98,66 @@ Feedback based on real-time data is seen as increasingly important for ICT-based
 %\keywords{ACM proceedings, \LaTeX, text tagging} % NOT required for Proceedings
 
 \section{Introduction}
-In order to effectively monitor health, allocate resources, and respond to crises both countries and planners need real-time data.  In mobile health systems, real-time monitoring can improve health programs and address key health risks [Mechael].  Real-time data can provide an audit trail that enables practitioners to learn how best to modify health programs and avert future deaths [Krisberg].  In emergency response, the time lag in processing of structured data causes significant delays; faster data analysis allows decisions makes address problems sooner and with greater impact [Internews].
+In order to effectively monitor health, allocate resources, and respond to crises, both countries and planners need real-time data.  In mobile health systems, real-time monitoring can improve health programs and address key health risks \cite{mechael}.  Real-time data can provide an audit trail that enables practitioners to learn how best to modify health programs and avert future deaths \cite{krisberg}.  In emergency response, the time lag in processing of structured data causes significant delays; faster data analysis allows decisions makers to address problems sooner and have a greater impact \cite{internews}.
 
-However, dynamic data analysis requires resources and skills that are often unavailable in the development context.
+To address this need tools like EpiSurveyor, OpenDataKit, and formhub.org allow development planners and others to conduct data gathering exercises without the need for server infrastructure or in-house programmers.  However, dynamic data analysis requires resources and skills that are often unavailable in the development context.  Even simplistic systems that perform custom user-defined aggregations and calculations on dynamic datasets require server infrastructure and a knowledge of general purpose programming languages.  Bamboo provides real-time aggregation, calculation, and summarization as a hosted web service.  Practitioners can interact with Bamboo using an easy to learn syntax, which obviates the server infrastructure and programming skill requirements.  
 
-Moreover, tools like EpiSurveyor, OpenDataKit / formhub.org allow development planners and others to conduct data gathering exercises without the need for server infrastrcture or in-house programmers. Even simplistic systems that perform custom user-defined aggregations and calculations on dynamic datasets, however, require server infrastructure and knowledge of general purpose programming languages. Bamboo aims to provide real-time aggregations, calculation, and summarization as a hosted web service, specified using an easy to learn formula syntax, and hosted as a web service so server infrastructure and/or programming skills are not required.
+Bamboo was built to enable the analysis of data collected using hosted data collection services, e.g. formhub.org.  Before Bamboo, we can categorize the existing solutions for dynamic data analysis as: custom tools, hosted tools, and offline tools.  Custom tools are either built in-house or by a third-party and in both cases require server infrastructure, for example based on the LAMP stack or SQL.  Such custom tools are expensive and often beyond the capacity of most organizations; furthermore, they lead to duplication and are difficult to adapt to new tasks.
 
-Bamboo was built as a tool to enable data analysis on data collected on the hosted data collection service formhub.org. The existing solutions before bamboo for performing dynamic data analysis were roughly categorized as:
-
-custom tools, either built in-house or by a third-party, requiring server infrastructure e.g. based on LAMP stack, SQL
-hosted tools, e.g. Google Fusion Tables or Google Docs
-offline tools, e.g. R, Microsoft Excel, STATA, etc.
-
-Custom tools are expensive and often beyond the capacity of most organizations; furthermore, they lead to duplication and are difficult to adapt to new tasks.  The hosted tools we evaluated had functional limitations that prevented their use.  For example, Google Fusion Tables only allows a limited set of calculations, and the one spreadsheet model of Google Docs precludes aggregations [Gonzalez:2010, Gonzalez:2010].  Offline tools have the flexibility required but have a steep learning curve and require a programmatic wrapper to allow for a truly dynamic workflow, thus creating a much higher barrier to entry.
+When evaluating hosted tools, we examined Google Fusion Tables and Google Docs, and found that both had functional limitations that prevented their use.  Google Fusion Tables only allows a limited set of calculations, and the one spreadsheet model of Google Docs precludes aggregations \cite{gonzalez1, gonzalez2}.  There are many applications and programming languages used in offline data analysis, e.g. Microsoft Excel, Python, R, SPSS, STATA, etc.  Offline tools have the flexibility required but have a steep learning curve and require a programmatic wrapper to allow for a truly dynamic workflow, thus creating a much higher barrier to entry.
 
 \section{Design}
-Bamboo sits between data collection and presentation. The dynamic statistical analysis within bamboo allows practitioners to easily build dashboards, maps, tables, and more which automatically update as new data arrives.  This enables the split-apply-combine strategy of data analysis [Wickham:2011] through a web service.
 
 \begin{figure}
 \centering
 \includegraphics[width=3in]{figures/bamboo_flow}
 \caption{Systematizing data collection and presentation with Bamboo.}
+\label{fig:flow}
 \end{figure}
 
-Bamboo’s core functionality allows practitioners to:
+Bamboo sits between data collection and presentation. The dynamic statistical analysis within bamboo allows practitioners to easily build dashboards, maps, tables, and more which automatically update as new data arrives.  This enables the split-apply-combine strategy of data analysis \cite{wickham} through a web service.  Bamboo’s core functionality allows practitioners to: (1) store, update, and merge data sets, (2) build calculations and aggregations from data sets, and (3) generate summary statistics, means, counts, etc., from data sets.
 
-\begin{itemize}
-\item store, update, and merge data sets
-\item build calculations and aggregations from data sets
-\item generate summary statistics, means, counts, etc., from data sets
-\end{itemize}
+Generalizability is a fundamental principle of the design: Bamboo accepts any CSV file and provides users with complete control over the type of calculations.  To encourage community use and development we have made Bamboo open source and structured it to be easily extendable.  We also offer Bamboo as a hosted web service, its usage is shown in Fig. \ref{fig:flow}.  The Bamboo web service uses REST conventions and we have built client libraries that communicate with it in Python and JavaScript.
 
-Generalizability is a fundamental principle of the design: Bamboo accepts any CSV file and provides users with complete control over the type of calculations.  To encourage community use and development we have made Bamboo open source and structured it to be easily extendable.  We also offer Bamboo as a hosted web service.  The Bamboo web service uses REST conventions and we have built client libraries that communicate with it in Python and JavaScript.
-
-To serve as a general dynamic data analysis service, updates are propagated through the system ensuring that any aggregations or merged datasets are synchronized with the most recent data.
+To serve as a dynamic data analysis service, updates are propagated through the system ensuring that any aggregations or merged datasets are synchronized with the most recent data, as shown in Fig. \ref{fig:updates}.  Updates are triggered programmatically with a simple JSON web request, making it very easy to link data from a variety of sources.  We have integrated automatic updates to the Bamboo web service from our mobile data collection platform, Formhub.
 
 \begin{figure}
 \centering
 \includegraphics[width=2in]{figures/update_flow}
 \caption{An update propagates from the dataset to all downstream merged datasets and aggregations.  The black arrows show structural dependencies created by the client.  The red arrow shows an update propagating through the system.}
+\label{fig:updates}
 \end{figure}
 
 \subsection{Case Study 1: Survey Monitoring}
 
-During a large data collection project in Nigeria, bamboo was used to monitor the progress of the surveying effort. By summarizing the amount of data collection per state and “facility type” [Figure 1], data collection monitors were able to identify states where data collection is lagging behind expectation.
+\begin{figure}
+\centering
+\includegraphics[width=3.5in]{figures/summary.png}
+\caption{After merging datasets, the normalization formula required one API call to establish. Thereafter, the same URL provides updated data to produce the graph above at any point in the survey process.}
+\label{fig:summary}
+\end{figure}
 
+During a large data collection project in Nigeria, researchers used Bamboo to monitor the progress of a public water facilities survey as it was conducted across the country. By summarizing the amount of data collected per state and type of facility it was collected for, shown in Fig. \ref{fig:summary}, data collection monitors were able to identify states in which data was being collected slower than expected.
 
-Bamboo also allows exploratory analysis of this same dataset using more sophisticated 
-
-For example, suppose you are an education minister monitoring school performance.  You decide to enter two datasets representing eastern and western school performance into the system and then combine them to produce a new merged data set.  Given that each dataset defines a num\_teachers column, this column will be available in calculations or aggregations.  Using a simple formula,
-
-$$mean_num_teachers_by_district=mean(num_teachers), group=district$$
-
-you can calculate the mean number of teachers per district for the merged dataset.
-
-Now, what happens when new data for the eastern schools arrives?  With the aforementioned data analysis solutions, you would have to recombine your data and recalculate the mean per district.  Using Bamboo, you simply update the eastern school dataset and the system updates the merged dataset, automatically recalculating the mean per district given the new data.
+In addition to summarization, Bamboo allows exploratory monitoring of this dataset using more complex metrics, such as the number of surveys per person, which allows us to normalize the number of public water points expected relative to geographic population density.
 
 \subsection{Case Study 2: Survey Monitoring}
 
-Here we present a case study of how we have used Bamboo to assist in large scale data collection efforts.  During the surveying process it is important that data collection managers and government liaisons are able to monitor how the survey effort is progressing.  To fulfill these needs, we use Bamboo to create updatable histograms which display the amount of data that has been collected by each district and highlight where problems are.
+Fig. \ref{fig:berg} shows a truncated version of a Community Health Worker 30 day performance monitoring table used in the ChildCount+ system \cite{berg}.  The ability to create and review this information was a crucial component of a larger system for improving the registration of children and ultimately health interventions, such as immunizations and monitoring risk factors.
 
-[ histogram of districts, with some sucking]
+By connecting the ChildCount+ data collection infrastructure to Bamboo, practitioners are provided with the statistical analysis needed to build this table in \emph{real-time} as more data arrives.  Requiring only a minimal amount of effort and expertise, what were formerly static reports or charts can become dynamic monitor tools.
 
-The above histogram alerts data monitors that they should pay special attention to the Ogabaru [or whatever??] district.
-
-To perform this analysis using an offline tool, we would need to:
-
-\begin{enumerate}
-\item export the data files
-\item open each data file in desktop software
-\item combine the datafiles into a single file
-\item generate a chart
-\item copy the chart to the web then email a link.
-\end{enumerate}
-
-The major disadvantage with this procedure is that all processes will have to be repeated each time the data is updated.
-
-However, to perform the same analysis using bamboo we:
-
-\begin{enumerate}
-\item register a dataset with bamboo,
-\item open up charts.bamboo.io using our dataset’s key,
-\item and select the appropriate graph
-\end{enumerate}
-
-Even better, when the dataset is updated we only perform step (3).  The advantages are clear, there is no need to repeat previous tasks as new data arrives, we don’t need to keep track of files, and everything is recorded in one place.  What took five steps before can now be accomplished in a single step.
+\begin{figure}
+\centering
+\includegraphics[width=3.5in]{figures/berg_table}
+\caption{A Community Health Worker 30 day performance monitoring table\cite{berg}.}
+\label{fig:berg}
+\end{figure}
 
 \section{Conclusions and Future Work}
 Bamboo allows users without programming expertise to do dynamic data analysis.  Bamboo systematizes the process of creating indicators for domain specific data sets thereby reducing the time between collection and analysis, as well as the time between analysis and reporting.
 
-In the future we will add additional analysis tools to encompass more real-world data processing tasks, such as levenshtein distance, nearest neighbors using k-means, time series analysis, and spatial analysis.  We plan to offer “calculation libraries” and allows users to build a set of calculations---e.g. health indicators---once, and then apply the same calculations to many datasets.
+In the future we will add additional analysis tools to encompass more real-world data processing tasks, such as levenshtein distance, nearest neighbors using k-means, time series analysis, and spatial analysis.  We plan to offer ``calculation libraries'' and allows users to build a set of calculations---e.g. health indicators---once, and then apply the same calculations to many datasets.
 
 %\end{document}  % This is where a 'short' article might terminate
 
