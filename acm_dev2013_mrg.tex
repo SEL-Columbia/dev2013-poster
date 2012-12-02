@@ -50,7 +50,7 @@
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{natbib}
-%\color{blue}
+%\color{red}
 
 \begin{document}
 %
@@ -141,9 +141,9 @@ and avert future deaths
 through access to audit trails based on timely data \cite{krisberg}.
 In mobile health systems, monitoring real-time reports can improve health programs and address key health risks \cite{mechael}.  
 
-Dynamic data analysis refers to viewing and analyzing of information---such as
+Dynamic data analysis refers to viewing and analyzing information---such as
 ongoing survey data---in real-time as it is updated.  Dynamic data analysis is a prerequisite for the
-aforementioned applications, it demands resources
+aforementioned applications, yet it demands resources
 and skills that are often unavailable in the development context.  Even
 simplistic systems that perform user-defined aggregations and calculations on
 dynamic datasets require high technical capacity.  \textbf{bamboo} provides real-time
@@ -157,7 +157,7 @@ analysis as: \emph{custom tools}, \emph{hosted tools}, and \emph{offline tools}.
 either built in-house or by a third-party, they are expensive and beyond the
 capacity of most organizations. Furthermore, custom tools often lead to
 a duplication of effort and are difficult to adapt to new tasks.  Popular hosted
-tools, such as Google Fusion Tables and Google Docs, had functional limitations
+tools, such as Google Fusion Tables and Google Docs, have functional limitations
 that made them unsuitable for our needs.  Google Fusion Tables only allows a limited set of
 calculations, and the ``one spreadsheet'' model of Google Docs precludes
 aggregations \cite{gonzalez2}.  Offline data analysis tools, e.g. Microsoft Excel, Python, R, SPSS, STATA, etc. have the flexibility required but have steep learning curves and require programmatic wrappers to allow for truly dynamic workflows, creating high barriers to entry.
@@ -227,8 +227,10 @@ Specifically, as a public water facilities survey was conducted across the count
 \textbf{bamboo} summarized the amount of data collected per state.
 This provided data collection monitors with the tools they needed to identify states in which data coverage was lower than expected.
 
-In addition, \textbf{bamboo} allowed researchers to conduct exploratory monitoring of this
-dataset using complex metrics.  Fig. \ref{fig:summary} shows the number of waterpoints surveyed per 1000
+To gain further insight, researchers used
+\textbf{bamboo} to conduct exploratory monitoring of this
+dataset through complex metrics.  Fig. \ref{fig:summary} shows the number of
+waterpoints surveyed per 1,000
 people.  \textbf{bamboo} analyzed the raw survey data and created the summary
 which powers this chart, ensuring that it
 was up-to-date as additional data was collected.
@@ -254,6 +256,13 @@ was up-to-date as additional data was collected.
 %\label{fig:berg}
 %\end{figure}
 
+\section{Conclusions}
+\textbf{bamboo} allows users without programming expertise to perform real-time
+data analysis.
+We envision immediate application in the development context, making performance
+monitoring \cite{berg} and real-time outlier detection within categorical data \cite{dimagi} much easier to implement. 
+\textbf{bamboo} systematizes the process of creating indicators for domain specific datasets thereby reducing the time between collection and analysis, as well as the time between analysis and reporting.
+
 \section{Future Work}
 In future work we will focus on providing additional analysis relevant to
 development work and methods to define and share this analysis.
@@ -266,13 +275,6 @@ Within certain domains we plan to offer ``calculation libraries'',
 which codify common metrics for that domain.  For example, health researchers could
 create a set of maternal health indicators once and then apply these same
 indicators across all of their datasets.
-
-\section{Conclusions}
-\textbf{bamboo} allows users without programming expertise to perform real-time
-data analysis.
-We envision immediate application in the development context, making performance
-monitoring \cite{berg} and real-time outlier detection within categorical data \cite{dimagi} much easier to implement. 
-\textbf{bamboo} systematizes the process of creating indicators for domain specific datasets thereby reducing the time between collection and analysis, as well as the time between analysis and reporting.
 
 %\end{document}  % This is where a 'short' article might terminate
 
