@@ -132,7 +132,7 @@ service for real-time data analysis: \textbf{bamboo}.
 \section{Introduction}
 To effectively monitor community health, allocate resources, and respond to crises, both countries and planners need real-time data. 
 To address this, tools like EpiSurveyor, OpenDataKit, and
-formhub.org allow development planners and others to conduct data gathering exercises without the need for server infrastructure or in-house programmers.  
+formhub allow development planners and others to conduct data gathering exercises without the need for server infrastructure or in-house programmers.  
 Nevertheless, data collection is only part of the picture.
 
 In emergency response, the time lag in processing structured data causes significant delays; faster data analysis allows decision makers to address problems sooner and have a greater impact \cite{internews}.
@@ -141,7 +141,9 @@ and avert future deaths
 through access to audit trails based on timely data \cite{krisberg}.
 In mobile health systems, monitoring real-time reports can improve health programs and address key health risks \cite{mechael}.  
 
-Dynamic data analysis, a prerequisite for such applications, demands resources
+Dynamic data analysis refers to viewing and analyzing of information---such as
+ongoing survey data---in real-time as it is updated.  Dynamic data analysis is a prerequisite for the
+aforementioned applications, it demands resources
 and skills that are often unavailable in the development context.  Even
 simplistic systems that perform user-defined aggregations and calculations on
 dynamic datasets require high technical capacity.  \textbf{bamboo} provides real-time
@@ -149,7 +151,6 @@ aggregation, calculation, and summarization as a hosted web
 service.\footnote{\url{http://bamboo.io/}}  Practitioners can interact with
 \textbf{bamboo}, and with their up-to-date datasets, using an easy to learn syntax.
 
-\vspace{1px}
 \section{Related Work}
 We categorized existing solutions for dynamic data
 analysis as: \emph{custom tools}, \emph{hosted tools}, and \emph{offline tools}.  Custom tools are
@@ -177,36 +178,37 @@ require.
 \end{figure}
 
 \textbf{bamboo} sits between data collection and reporting, as shown in Fig.
-\ref{fig:flow}. \textbf{bamboo}
-enables the split-apply-combine strategy of data analysis
-\cite{wickham} through a web service.
-The dynamic statistical analysis within \textbf{bamboo} allow practitioners to easily build
-dashboards, maps, and tables.  These reporting tools will automatically update as new data
-arrives.    
+\ref{fig:flow}.
 \textbf{bamboo}'s core functionality allows
 practitioners to:
 \begin{enumerate}
 \item store, update, and merge datasets,
-\vspace{-1px}
 \item build algebraic calculations and aggregations, and
-\vspace{-1px}
 \item generate summary statistics: means, counts, etc.
 \end{enumerate}
+This exposes the split-apply-combine strategy of data analysis
+\cite{wickham} through a web service.
+The dynamic statistical analysis within \textbf{bamboo} allow practitioners to easily build
+dashboards, maps, and tables.  These reporting tools will automatically update as new data
+arrives.
 
 Generalizability is a fundamental principle of the design: \textbf{bamboo} accepts any
 CSV file and provides users with complete control over their calculations.
-Updates can be submitted to our application programming interface (API) using
-JSON web requests, making it
+Updates can be submitted to \textbf{bamboo}'s application programming interface (API) using
+JavaScript Object Notation (JSON) web requests, making it
 simple to bring together data from a variety of sources.
 These updates are propagated through the system ensuring that any aggregations
 or merged datasets are synchronized with the most recent data, as depicted in Fig. \ref{fig:updates}.
-We have also integrated with formhub.org, the mobile data collection platform,
-so that updates to formhub.org are automatically passed onto \textbf{bamboo}.
+To simplify updates, we have integrated \textbf{bamboo} with formhub, the mobile data collection platform,
+such that updates to formhub can be automatically passed onto \textbf{bamboo}.
+\textbf{bamboo} could be similarly integrated with ODK Aggregate and other data
+collection platforms.
 
 To encourage community use and development we have made the code open source and
-structured it to be easily extendable. The \textbf{bamboo} web service uses REST
-conventions and we have built client libraries that communicate with it in
-Python and JavaScript.  For numerical computation \textbf{bamboo} uses pandas, a
+structured it to be easily extendable. The \textbf{bamboo} web service uses
+Representational State Transfer (REST)
+conventions and we have written client libraries in Python and JavaScript that
+connect to it.  For numerical computation \textbf{bamboo} uses pandas, a
 Python library for high-performance statistical data analysis \cite{mckinney}.
 
 \begin{figure}
@@ -218,12 +220,12 @@ Python library for high-performance statistical data analysis \cite{mckinney}.
 
 \section{Case Study}
 
-During a large-scale data collection project in Nigeria in which over 200,000 individual
+During a large-scale data collection project in Nigeria, in which over 200,000 individual
 surveys were conducted, researchers used
 \textbf{bamboo} to monitor progress.
 Specifically, as a public water facilities survey was conducted across the country
 \textbf{bamboo} summarized the amount of data collected per state.
-This provided data collection monitors with the tool they needed to identify states in which data coverage was lower than expected.
+This provided data collection monitors with the tools they needed to identify states in which data coverage was lower than expected.
 
 In addition, \textbf{bamboo} allowed researchers to conduct exploratory monitoring of this
 dataset using complex metrics.  Fig. \ref{fig:summary} shows the number of waterpoints surveyed per 1000
@@ -279,7 +281,9 @@ monitoring \cite{berg} and real-time outlier detection within categorical data \
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
+\small{
 \bibliography{acm_dev2013_mrg}  % sigproc.bib is the name of the Bibliography in this case
+}
 % You must have a proper ".bib" file
 %  and remember to run:
 % latex bibtex latex latex
